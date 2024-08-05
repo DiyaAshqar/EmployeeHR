@@ -1,0 +1,59 @@
+﻿@model IEnumerable<EmployeeHR.ViewModels.PayrollViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayrollDate)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.NetSalary)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+         
+        @foreach (var item in Model)
+        {
+            
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeFullName)   
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayrollDate)
+                </td> 
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.NetSalary)
+                </td> 
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Are you sure to delete this payroll?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

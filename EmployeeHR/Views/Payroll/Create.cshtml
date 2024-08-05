@@ -1,0 +1,113 @@
+﻿@model EmployeeHR.ViewModels.PayrollViewModel
+
+@{
+    if (Model == null)
+    {
+        ViewBag.ActionName = "Create";
+    }
+    else
+    {
+        ViewBag.ActionName = "Edit";
+    }
+    ViewData["Title"] = ViewBag.ActionName;
+
+
+}
+
+
+<h1>@ViewBag.ActionName Payroll</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="@ViewBag.ActionName">
+           
+             
+            <partial name="_EditForm" model="Model"   />
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        $(function () {
+            //LoadData();
+            $("#Employee").change(function () {
+                //alert("");
+                var employeeId = $("#Employee").val();
+
+                $.ajax({
+                    type: "GET",
+                    url: '/Payroll/GetBasicSalary?employeeId=' + employeeId,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    processData: true,
+                    success: function (response) {
+                        alert("Data has been added successfully.");
+                        document.getElementById("BasicSalary").value = response;
+                        SalaryCalculation();
+                    },
+                    error: function () {
+                        alert("Error while getting data");
+                    }
+                });
+                return false;
+            });
+        });
+
+        function SalaryCalculation() {
+
+            var basicSalary = document.getElementById("BasicSalary").value;
+            var bonus = document.getElementById("Bonus").value;
+            var leaves = document.getElementById("Leaves").value;
+
+            var txtSSAmount = document.getElementById("SocialSecurityAmount");
+            txtSSAmount.value = basicSalary * .075;
+            var ssAmount = document.getElementById("SocialSecurityAmount").value;
+
+            var txtNetSalary = document.getElementById("NetSalary");
+            var leavesAmount = (basicSalary / 30 / 8) * leaves;
+
+            txtNetSalary.value = (+basicSalary) + (+bonus) - (+ssAmount) - (+leavesAmount);
+        }
+    </script>
+
+
+
+}
+
+
+<script>
+
+
+    // $(document).ready(function () {
+    //     $("#Payroll_EmployeeId").on("change", function () {
+    //         $.ajax(
+    //             {
+    //                 url: '/Payroll/GetBasicSalary?Id=' + $(this).attr("value"),
+    //                 type: 'GET',
+    //                 data: "",
+    //                 contentType: 'application/json; charset=utf-8',
+    //                 success: function (data) {
+    //                     alert(data);
+    //                     $("#partialDiv").html(data);
+    //                 },
+    //                 error: function () {
+    //                     alert("error");
+    //                 }
+    //             });
+    //     });
+    // });
+</script>
+
+
